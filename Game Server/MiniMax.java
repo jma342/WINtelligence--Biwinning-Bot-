@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class MiniMax extends Player {
 
-	private static int MAX_DEPTH=4; 
-	private Move bestMove; 
+	private static int MAX_DEPTH=6; 
+	private Move bestMove=null; 
 	
 	public MiniMax(Scanner sc) {
 		super(sc);
@@ -23,15 +23,18 @@ public class MiniMax extends Player {
 		}
 		
 		HashSet<Point> positions = new HashSet<Point>(); 
-		this.board.myPiecePositions(positions);
+		this.board.myPiecePositions(positions,turn);
 		
 		int sum =0; 
 				
+		 System.err.println("board heuristic"); 
+		
 		for(Point p: positions){
-			sum -=Board.dist(p.mx, p.my, targetR, targetC); 
+			System.err.println("board distance for piece:"+Board.dist(p.mx, p.my, targetR, targetC)); 
+			sum +=Board.dist(p.mx, p.my, targetR, targetC); 
 		}
 		
-		return sum; 
+		return (int)Math.floor(100000.0/sum); 
 	}
 	
 	private Move alphaBetaSearch(Board b, int turn){
@@ -39,41 +42,48 @@ public class MiniMax extends Player {
 		int beta  = Integer.MAX_VALUE; 
 		
 		int max = maxValue(this.board, alpha, beta, 0, turn);
-		//System.err.println("Minimax value:"+max); 
+		System.err.println("Minimax value:"+max); 
+		b.move(bestMove);
 		return bestMove; 
 	}
 	
 	private Integer maxValue(Board b, int alpha, int beta, int depth, int myturn){
 		if(b.checkWin(myturn) || depth ==MAX_DEPTH){
+			System.err.println("should check"); 
 			return boardHeuristic(myturn); 
 		}
 		int v = Integer.MIN_VALUE; 
 		HashSet<Point> positions = new HashSet<Point>(); 
-		b.myPiecePositions(positions);
+		b.myPiecePositions(positions,myturn);
 		
 		// iterate through all marbles and find all valid moves
 		for(Point p : positions){
 			HashSet<Integer> validMoves = new HashSet<Integer>(); 			
 			b.legalMoves(p.mx, p.my, validMoves); 
 			
+			System.err.println("max and depth:"+depth); 
+			
 			for(Integer i : validMoves){
 				
-				Move m = new Move(0,0,0, p.mx,p.my,i/25,i%25,-1,-1 ); 
-				b.move(m);
-				v = Math.max(v, minValue(b,alpha,beta,depth+1, myturn)); 
-				if(v>= beta){
-					Move un = new Move(0,0,0,i/25,i%25,p.mx,p.my,-1,-1); 
-					b.move(un); 
-					return v;
-				}
-				if(alpha > v){
+				if(b.validateSimpleMove(p.mx,p.my,i/25, i%25,-1,-1,myturn)){
+				
+					Move m = new Move(0,0,0, p.mx,p.my,i/25,i%25,-1,-1 ); 
+					b.move(m);
+					
+					v = Math.max(v, minValue(b,alpha,beta,depth+1, myturn)); 
+					if(v>= beta){
+						Move un = new Move(0,0,0,i/25,i%25,p.mx,p.my,-1,-1); 
+						b.move(un); 
+						return v;
+					}
+
+					if(depth == 0 && v>=alpha){
+						bestMove = m; 
+					}
 					Move un = new Move(0,0,0,i/25,i%25,p.mx,p.my,-1,-1); 
 					b.move(un);
+					alpha = Math.max(alpha,v);
 				}
-				if(depth == 0 && v>=alpha){
-					bestMove = m; 
-				}
-				alpha = Math.max(alpha,v); 
 			}
 			
 		}
@@ -87,28 +97,35 @@ public class MiniMax extends Player {
 		}
 		int v = Integer.MAX_VALUE; 
 		HashSet<Point> positions = new HashSet<Point>(); 
-		b.opponentsPiecePositions(positions);
+		b.opponentsPiecePositions(positions, myturn);
+		
+		System.err.println("min and depth:"+depth); 
+
 		
 		// iterate through all marbles and find all valid moves
 		for(Point p : positions){
 			HashSet<Integer> validMoves = new HashSet<Integer>(); 			
 			b.legalMoves(p.mx, p.my, validMoves); 
 			
+			
 			for(Integer i : validMoves){
-				
-				Move m = new Move(0,0,0, p.mx,p.my,i/25,i%25,-1,-1 ); 
-				b.move(m);
-				v = Math.min(v, maxValue(b,alpha,beta,depth+1, myturn)); 
-				if(v <= alpha){
-					Move un = new Move(0,0,0,i/25,i%25,p.mx,p.my,-1,-1); 
-					b.move(un); 
-					return v;
-				}
-				if(beta < v){
+				if(b.validateSimpleMove(p.mx,p.my,i/25, i%25,-1,-1,3-myturn)){
+
+					Move m = new Move(0,0,0, p.mx,p.my,i/25,i%25,-1,-1 ); 
+					b.move(m);
+					
+					v = Math.min(v, maxValue(b,alpha,beta,depth+1, myturn)); 
+					if(v <= alpha){
+						Move un = new Move(0,0,0,i/25,i%25,p.mx,p.my,-1,-1); 
+						b.move(un); 
+						return v;
+					}
+					beta = Math.min(beta,v); 
 					Move un = new Move(0,0,0,i/25,i%25,p.mx,p.my,-1,-1); 
 					b.move(un);
 				}
-				beta = Math.min(beta,v); 
+
+
 			}
 			
 		}

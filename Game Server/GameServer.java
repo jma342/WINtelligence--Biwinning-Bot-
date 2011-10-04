@@ -65,6 +65,7 @@ public class GameServer {
 				long usedTime = afterRead.getTimeInMillis()-beforeTime;
 				sb.append(currentS);
 				time[turn] -= usedTime;
+				log.println(currentS); 
 				if (currentS == null) {
 					log.println("#player" + (turn + 1) + "'s connection is lost");
 					winner = 2-turn;

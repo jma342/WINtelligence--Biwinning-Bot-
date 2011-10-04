@@ -388,12 +388,12 @@ public class Board {
 	 * Places the positions of all my pieces into set
 	 * TODO: change with moves 
 	 */
-	public void myPiecePositions(HashSet<Point>positions){
+	public void myPiecePositions(HashSet<Point>positions, int myTurn){
 		positions.clear(); 
 		
 		for (int i = 0; i < 17; i++) {
 			for (int j = 0; j < 25; j++) {
-				if(board[i][j]==turn)
+				if(board[i][j]==myTurn)
 					positions.add(new Point(i,j)); 
 			}
 		}
@@ -402,12 +402,12 @@ public class Board {
 	/**
 	 * Places the positions of all my pieces into set
 	 */
-	public void opponentsPiecePositions(HashSet<Point>positions){
+	public void opponentsPiecePositions(HashSet<Point>positions, int myTurn){
 		positions.clear(); 
 		
 		for (int i = 0; i < 17; i++) {
 			for (int j = 0; j < 25; j++) {
-				if(board[i][j]!=turn && board[i][j]!=0 && board[i][j]!=3)
+				if(board[i][j]==3-myTurn )
 					positions.add(new Point(i,j)); 
 			}
 		}
