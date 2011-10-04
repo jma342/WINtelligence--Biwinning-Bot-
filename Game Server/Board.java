@@ -112,7 +112,7 @@ public class Board {
 		for(int j=0; j<10; j++){
 			int x=homexy[2-myturn][j][0];
 			int y=homexy[2-myturn][j][1];
-			if (board[x][y]!=0){
+			if (board[x][y]!=3 && board[x][y]>0){
 				marbles[board[x][y]-1]+=1;
 			}
 		}
@@ -384,6 +384,35 @@ public class Board {
         turn=1;
 	}
 
+	/**
+	 * Places the positions of all my pieces into set
+	 * TODO: change with moves 
+	 */
+	public void myPiecePositions(HashSet<Point>positions){
+		positions.clear(); 
+		
+		for (int i = 0; i < 17; i++) {
+			for (int j = 0; j < 25; j++) {
+				if(board[i][j]==turn)
+					positions.add(new Point(i,j)); 
+			}
+		}
+	}
+	
+	/**
+	 * Places the positions of all my pieces into set
+	 */
+	public void opponentsPiecePositions(HashSet<Point>positions){
+		positions.clear(); 
+		
+		for (int i = 0; i < 17; i++) {
+			for (int j = 0; j < 25; j++) {
+				if(board[i][j]!=turn && board[i][j]!=0 && board[i][j]!=3)
+					positions.add(new Point(i,j)); 
+			}
+		}
+	}
+	
     public int getSpecials(int i){
         return specialsLeft[i-1];
     }

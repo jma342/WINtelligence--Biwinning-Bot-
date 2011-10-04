@@ -1,40 +1,28 @@
-import java.awt.EventQueue;
-
-import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
 import java.awt.BorderLayout;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.HashSet;
-import java.util.Scanner;
-
-import javax.swing.JFileChooser;
-import javax.swing.JMenu;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.ButtonGroup;
-import javax.swing.Timer;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JMenuItem;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Scanner;
+
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 class GUIBoard extends JPanel{
@@ -348,7 +336,7 @@ public class ClientGUI {
         });
 
         boardpanel.addMouseListener(new MouseAdapter() {
-            private boolean specialUsed;
+           // private boolean specialUsed;
 
             @Override
             public void mouseClicked(MouseEvent e) {
