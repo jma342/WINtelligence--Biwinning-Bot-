@@ -96,7 +96,7 @@ public class GreedyAI extends Player {
 				System.out.println(p.think());
 				int status = p.getStatus();
 				if(status<0){
-					System.err.println("I lost");
+					System.err.println("I lost:"+status);
 					break;
 				}
 				else if(status>0){
