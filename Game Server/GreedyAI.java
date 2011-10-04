@@ -84,6 +84,7 @@ public class GreedyAI extends Player {
 		return m.r1+" "+m.c1+" "+m.r2+" "+m.c2 + " "+ m.r3+" "+ m.c3;
 	}
 	
+	
 	public static void main(String args[]){
 		int turn = 1;
 		GreedyAI p = new GreedyAI(new Scanner(System.in));

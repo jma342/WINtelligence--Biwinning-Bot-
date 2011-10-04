@@ -1,4 +1,5 @@
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Scanner;
 
 
@@ -45,6 +46,27 @@ public class MiniMax extends Player {
 		System.err.println("Minimax value:"+max); 
 		b.move(bestMove);
 		return bestMove; 
+	}
+	
+	/**
+	 * returns the grouping factor for my pieces defined as the sum of distances between pieces
+	 */
+	private int getGroupingFactor(Board board){
+		HashSet<Point> myPiecePositions = new HashSet<Point>();
+		board.opponentsPiecePositions(myPiecePositions);
+		Iterator<Point> firstIterator = myPiecePositions.iterator();
+		int groupingFactor = 0;
+		
+		while(firstIterator.hasNext()){
+			Point firstPoint = firstIterator.next();
+			myPiecePositions.remove(firstPoint);
+			Iterator<Point> secondIterator = myPiecePositions.iterator();
+			while(secondIterator.hasNext()){
+				Point secondPoint = secondIterator.next();
+				groupingFactor = groupingFactor + Board.dist(firstPoint.my, firstPoint.mx, secondPoint.my, secondPoint.mx);
+			}
+		}
+		return groupingFactor;
 	}
 	
 	private Integer maxValue(Board b, int alpha, int beta, int depth, int myturn){
